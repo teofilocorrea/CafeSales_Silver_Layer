@@ -1,10 +1,33 @@
 -- ============================================================
--- Script   : Prueba de limpieza — Campos de texto (CASE)
+-- Script   : Ensayo de limpieza — Campos de texto (CASE)
 -- Capa     : Silver (transformación desde Bronze)
--- Objetivo : Convertir ERROR/UNKNOWN a NULL en columnas de texto
+-- Objetivo : Convertir ERROR/UNKNOWN a NULL en columnas de texto.
+--            Los campos de texto NO requieren CAST (texto → texto),
+--            solo limpieza con CASE.
 -- Autor    : Teofilo Correa Rojas
--- Fecha    : 26 de julio 2026
+-- Fecha    : 30 de julio 2026
 -- ============================================================
+
+-- ------------------------------------------------------------
+-- VALIDACIÓN PREVIA — Longitud máxima de los campos de texto
+-- ------------------------------------------------------------
+-- Antes de definir el tamaño de los VARCHAR en silver.sales,
+-- se verifica que ningún valor exceda el límite planeado.
+-- Resultado obtenido:
+--   max_item = 8, max_payment_method = 14, max_location = 8
+-- Conclusión: VARCHAR(100) e VARCHAR(50) son suficientes.
+-- ------------------------------------------------------------
+
+SELECT
+    MAX(LENGTH(item))           AS max_item,
+    MAX(LENGTH(payment_method)) AS max_payment_method,
+    MAX(LENGTH(location))       AS max_location
+FROM bronze.sales;
+
+
+-- ------------------------------------------------------------
+-- ENSAYO — Limpieza de campos de texto con CASE
+-- ------------------------------------------------------------
 
 SELECT
     item,
